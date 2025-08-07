@@ -1,0 +1,19 @@
+# Variables d'environnement
+.env
+targetflux_api/.env
+targetflux_crawler/.env
+targetflux_front/.env.local
+
+# Node / Next.js
+targetflux_front/node_modules/
+targetflux_front/.next/
+targetflux_front/out/
+
+# Python, Docker…
+venv/
+__pycache__/
+*.py[cod]
+*.log
+
+# macOS
+.DS_Store
