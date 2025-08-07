@@ -1,0 +1,20 @@
+# Virtualenv
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Env files
+.env
+targetflux_api/.env
+targetflux_crawler/.env
+targetflux_front/.env.local
+
+# Next.js
+targetflux_front/node_modules/
+targetflux_front/.next/
+targetflux_front/out/
+
+# macOS
+.DS_Store
