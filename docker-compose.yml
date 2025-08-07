@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: targetflux
+      POSTGRES_USER: tf_user
+      POSTGRES_PASSWORD: tf_pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  opensearch:
+    image: opensearchproject/opensearch:2.10.2
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+
+  s3mock:
+    image: adobe/s3mock:2.1.30
+    environment:
+      - initialBuckets=targetflux-pages
+    ports:
+      - "9090:9090"
+
+  api:
+    build:
+      context: ./targetflux_api
+      dockerfile: Dockerfile
+    env_file: ./targetflux_api/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - opensearch
+      - s3mock
+
+  crawler:
+    build:
+      context: ./targetflux_crawler
+      dockerfile: Dockerfile
+    env_file: ./targetflux_crawler/.env
+    depends_on:
+      - api
+
+  front:
+    build:
+      context: ./targetflux_front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file: ./targetflux_front/.env
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
